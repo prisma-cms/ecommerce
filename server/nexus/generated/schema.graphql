@@ -48,6 +48,11 @@ scalar JSON
 
 type Mutation {
   """
+  Создать хранилище
+  """
+  createStore(data: StoreCreateInput!): StorePayload!
+
+  """
   Авторизация
   """
   signin(data: UserSigninDataInput!, where: UserWhereUniqueInput!): AuthPayload!
@@ -117,6 +122,17 @@ type Query {
   me: User
 
   """
+  Список хранилищь
+  """
+  stores(
+    cursor: StoreWhereUniqueInput
+    orderBy: [StoreOrderByInput!]
+    skip: Int
+    take: Int
+    where: StoreWhereInput
+  ): [Store!]!
+
+  """
   Список пользователей
   """
   users(
@@ -139,6 +155,67 @@ type RequestError {
 enum SortOrder {
   asc
   desc
+}
+
+"""
+Хранилище
+"""
+type Store {
+  """
+  Когда создан
+  """
+  createdAt: DateTime!
+  id: String!
+  name: String
+
+  """
+  Когда обновлен
+  """
+  updatedAt: DateTime!
+}
+
+input StoreCreateInput {
+  name: String!
+}
+
+input StoreListRelationFilter {
+  every: StoreWhereInput
+  none: StoreWhereInput
+  some: StoreWhereInput
+}
+
+input StoreOrderByInput {
+  createdAt: SortOrder
+  createdById: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+"""
+Объект ответа мутации пользователя
+"""
+type StorePayload {
+  data: Store
+  errors: [RequestError!]!
+  message: String
+  success: Boolean!
+}
+
+input StoreWhereInput {
+  AND: [StoreWhereInput!]
+  CreatedBy: UserWhereInput
+  NOT: [StoreWhereInput!]
+  OR: [StoreWhereInput!]
+  createdAt: DateTimeFilter
+  createdById: StringFilter
+  id: StringFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input StoreWhereUniqueInput {
+  id: String
 }
 
 input StringFilter {
@@ -255,6 +332,7 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  Stores: StoreListRelationFilter
   Tokens: TokenListRelationFilter
   active: BoolFilter
   createdAt: DateTimeFilter

@@ -15,18 +15,23 @@ type CustomScalars = 'DateTime'
 interface PrismaModels {
   User: Prisma.User
   Token: Prisma.Token
+  Store: Prisma.Store
 }
 
 // Prisma input types metadata
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname' | 'Tokens'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname' | 'Tokens' | 'Stores'
       ordering: 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname'
     }
     tokens: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'expiredAt' | 'userId' | 'User'
       ordering: 'id' | 'createdAt' | 'expiredAt' | 'userId'
+    }
+    stores: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
     }
   },
   User: {
@@ -34,8 +39,15 @@ interface NexusPrismaInputs {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'expiredAt' | 'userId' | 'User'
       ordering: 'id' | 'createdAt' | 'expiredAt' | 'userId'
     }
+    Stores: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
+    }
   }
   Token: {
+
+  }
+  Store: {
 
   }
 }
@@ -47,6 +59,8 @@ interface NexusPrismaOutputs {
     users: 'User'
     token: 'Token'
     tokens: 'Token'
+    store: 'Store'
+    stores: 'Store'
   },
   Mutation: {
     createOneUser: 'User'
@@ -61,6 +75,12 @@ interface NexusPrismaOutputs {
     deleteOneToken: 'Token'
     deleteManyToken: 'AffectedRowsOutput'
     upsertOneToken: 'Token'
+    createOneStore: 'Store'
+    updateOneStore: 'Store'
+    updateManyStore: 'AffectedRowsOutput'
+    deleteOneStore: 'Store'
+    deleteManyStore: 'AffectedRowsOutput'
+    upsertOneStore: 'Store'
   },
   User: {
     id: 'String'
@@ -75,6 +95,7 @@ interface NexusPrismaOutputs {
     showEmail: 'Boolean'
     showFullname: 'Boolean'
     Tokens: 'Token'
+    Stores: 'Store'
   }
   Token: {
     id: 'String'
@@ -83,12 +104,21 @@ interface NexusPrismaOutputs {
     userId: 'String'
     User: 'User'
   }
+  Store: {
+    id: 'String'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
+    name: 'String'
+    createdById: 'String'
+    CreatedBy: 'User'
+  }
 }
 
 // Helper to gather all methods relative to a model
 interface NexusPrismaMethods {
   User: Typegen.NexusPrismaFields<'User'>
   Token: Typegen.NexusPrismaFields<'Token'>
+  Store: Typegen.NexusPrismaFields<'Store'>
   Query: Typegen.NexusPrismaFields<'Query'>
   Mutation: Typegen.NexusPrismaFields<'Mutation'>
 }
