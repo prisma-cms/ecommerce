@@ -2,21 +2,21 @@ import { FieldResolver } from 'nexus'
 import { NexusGenObjects } from 'server/nexus/generated/nexus'
 
 /**
- * Создание хранилища
+ * Создание сущности
  */
-export const createStore: FieldResolver<'Mutation', 'createStore'> = async (
+export const createEntity: FieldResolver<'Mutation', 'createEntity'> = async (
   _,
   args,
   ctx
 ) => {
   let success = false
   const message = ''
-  let result: NexusGenObjects['Store'] | null = null
+  let result: NexusGenObjects['Entity'] | null = null
 
   const currentUser = ctx.currentUser
 
   if (currentUser) {
-    await ctx.prisma.store
+    await ctx.prisma.entity
       .create({
         data: {
           ...args.data,

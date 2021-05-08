@@ -4,7 +4,7 @@
  */
 
 import { PrismaContext } from './../context'
-import { User, Store } from '@prisma/client'
+import { User, Store, Entity, EntityType } from '@prisma/client'
 import { core } from 'nexus'
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -66,6 +66,78 @@ export interface NexusGenInputs {
     lte?: NexusGenScalars['DateTime'] | null // DateTime
     not?: NexusGenInputs['NestedDateTimeNullableFilter'] | null // NestedDateTimeNullableFilter
     notIn?: NexusGenScalars['DateTime'][] | null // [DateTime!]
+  }
+  EntityCreateInput: {
+    // input type
+    name: string // String!
+  }
+  EntityListRelationFilter: {
+    // input type
+    every?: NexusGenInputs['EntityWhereInput'] | null // EntityWhereInput
+    none?: NexusGenInputs['EntityWhereInput'] | null // EntityWhereInput
+    some?: NexusGenInputs['EntityWhereInput'] | null // EntityWhereInput
+  }
+  EntityOrderByInput: {
+    // input type
+    createdAt?: NexusGenEnums['SortOrder'] | null // SortOrder
+    createdById?: NexusGenEnums['SortOrder'] | null // SortOrder
+    entityTypeId?: NexusGenEnums['SortOrder'] | null // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null // SortOrder
+    name?: NexusGenEnums['SortOrder'] | null // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null // SortOrder
+  }
+  EntityTypeCreateInput: {
+    // input type
+    name: string // String!
+  }
+  EntityTypeListRelationFilter: {
+    // input type
+    every?: NexusGenInputs['EntityTypeWhereInput'] | null // EntityTypeWhereInput
+    none?: NexusGenInputs['EntityTypeWhereInput'] | null // EntityTypeWhereInput
+    some?: NexusGenInputs['EntityTypeWhereInput'] | null // EntityTypeWhereInput
+  }
+  EntityTypeOrderByInput: {
+    // input type
+    createdAt?: NexusGenEnums['SortOrder'] | null // SortOrder
+    createdById?: NexusGenEnums['SortOrder'] | null // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null // SortOrder
+    name?: NexusGenEnums['SortOrder'] | null // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null // SortOrder
+  }
+  EntityTypeWhereInput: {
+    // input type
+    AND?: NexusGenInputs['EntityTypeWhereInput'][] | null // [EntityTypeWhereInput!]
+    CreatedBy?: NexusGenInputs['UserWhereInput'] | null // UserWhereInput
+    Entities?: NexusGenInputs['EntityListRelationFilter'] | null // EntityListRelationFilter
+    NOT?: NexusGenInputs['EntityTypeWhereInput'][] | null // [EntityTypeWhereInput!]
+    OR?: NexusGenInputs['EntityTypeWhereInput'][] | null // [EntityTypeWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+    createdById?: NexusGenInputs['StringFilter'] | null // StringFilter
+    id?: NexusGenInputs['StringFilter'] | null // StringFilter
+    name?: NexusGenInputs['StringFilter'] | null // StringFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+  }
+  EntityTypeWhereUniqueInput: {
+    // input type
+    id?: string | null // String
+  }
+  EntityWhereInput: {
+    // input type
+    AND?: NexusGenInputs['EntityWhereInput'][] | null // [EntityWhereInput!]
+    CreatedBy?: NexusGenInputs['UserWhereInput'] | null // UserWhereInput
+    EntityType?: NexusGenInputs['EntityTypeWhereInput'] | null // EntityTypeWhereInput
+    NOT?: NexusGenInputs['EntityWhereInput'][] | null // [EntityWhereInput!]
+    OR?: NexusGenInputs['EntityWhereInput'][] | null // [EntityWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+    createdById?: NexusGenInputs['StringFilter'] | null // StringFilter
+    entityTypeId?: NexusGenInputs['StringNullableFilter'] | null // StringNullableFilter
+    id?: NexusGenInputs['StringFilter'] | null // StringFilter
+    name?: NexusGenInputs['StringFilter'] | null // StringFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+  }
+  EntityWhereUniqueInput: {
+    // input type
+    id?: string | null // String
   }
   NestedBoolFilter: {
     // input type
@@ -231,6 +303,8 @@ export interface NexusGenInputs {
   UserWhereInput: {
     // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null // [UserWhereInput!]
+    Entities?: NexusGenInputs['EntityListRelationFilter'] | null // EntityListRelationFilter
+    EntityTypes?: NexusGenInputs['EntityTypeListRelationFilter'] | null // EntityTypeListRelationFilter
     NOT?: NexusGenInputs['UserWhereInput'][] | null // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null // [UserWhereInput!]
     Stores?: NexusGenInputs['StoreListRelationFilter'] | null // StoreListRelationFilter
@@ -278,6 +352,22 @@ export interface NexusGenObjects {
     success: boolean // Boolean!
     token?: string | null // String
   }
+  Entity: Entity
+  EntityPayload: {
+    // root type
+    data?: NexusGenRootTypes['Entity'] | null // Entity
+    errors: NexusGenRootTypes['RequestError'][] // [RequestError!]!
+    message?: string | null // String
+    success: boolean // Boolean!
+  }
+  EntityType: EntityType
+  EntityTypePayload: {
+    // root type
+    data?: NexusGenRootTypes['EntityType'] | null // EntityType
+    errors: NexusGenRootTypes['RequestError'][] // [RequestError!]!
+    message?: string | null // String
+    success: boolean // Boolean!
+  }
   Mutation: {}
   Query: {}
   RequestError: {
@@ -315,14 +405,46 @@ export interface NexusGenFieldTypes {
     success: boolean // Boolean!
     token: string | null // String
   }
+  Entity: {
+    // field return type
+    createdAt: NexusGenScalars['DateTime'] // DateTime!
+    id: string // String!
+    name: string | null // String
+    updatedAt: NexusGenScalars['DateTime'] // DateTime!
+  }
+  EntityPayload: {
+    // field return type
+    data: NexusGenRootTypes['Entity'] | null // Entity
+    errors: NexusGenRootTypes['RequestError'][] // [RequestError!]!
+    message: string | null // String
+    success: boolean // Boolean!
+  }
+  EntityType: {
+    // field return type
+    createdAt: NexusGenScalars['DateTime'] // DateTime!
+    id: string // String!
+    name: string | null // String
+    updatedAt: NexusGenScalars['DateTime'] // DateTime!
+  }
+  EntityTypePayload: {
+    // field return type
+    data: NexusGenRootTypes['EntityType'] | null // EntityType
+    errors: NexusGenRootTypes['RequestError'][] // [RequestError!]!
+    message: string | null // String
+    success: boolean // Boolean!
+  }
   Mutation: {
     // field return type
+    createEntity: NexusGenRootTypes['EntityPayload'] // EntityPayload!
+    createEntityType: NexusGenRootTypes['EntityTypePayload'] // EntityTypePayload!
     createStore: NexusGenRootTypes['StorePayload'] // StorePayload!
     signin: NexusGenRootTypes['AuthPayload'] // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload'] // AuthPayload!
   }
   Query: {
     // field return type
+    entities: NexusGenRootTypes['Entity'][] // [Entity!]!
+    entityTypes: NexusGenRootTypes['EntityType'][] // [EntityType!]!
     me: NexusGenRootTypes['User'] | null // User
     stores: NexusGenRootTypes['Store'][] // [Store!]!
     users: NexusGenRootTypes['User'][] // [User!]!
@@ -369,14 +491,46 @@ export interface NexusGenFieldTypeNames {
     success: 'Boolean'
     token: 'String'
   }
+  Entity: {
+    // field return type name
+    createdAt: 'DateTime'
+    id: 'String'
+    name: 'String'
+    updatedAt: 'DateTime'
+  }
+  EntityPayload: {
+    // field return type name
+    data: 'Entity'
+    errors: 'RequestError'
+    message: 'String'
+    success: 'Boolean'
+  }
+  EntityType: {
+    // field return type name
+    createdAt: 'DateTime'
+    id: 'String'
+    name: 'String'
+    updatedAt: 'DateTime'
+  }
+  EntityTypePayload: {
+    // field return type name
+    data: 'EntityType'
+    errors: 'RequestError'
+    message: 'String'
+    success: 'Boolean'
+  }
   Mutation: {
     // field return type name
+    createEntity: 'EntityPayload'
+    createEntityType: 'EntityTypePayload'
     createStore: 'StorePayload'
     signin: 'AuthPayload'
     signup: 'AuthPayload'
   }
   Query: {
     // field return type name
+    entities: 'Entity'
+    entityTypes: 'EntityType'
     me: 'User'
     stores: 'Store'
     users: 'User'
@@ -416,6 +570,14 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createEntity: {
+      // args
+      data: NexusGenInputs['EntityCreateInput'] // EntityCreateInput!
+    }
+    createEntityType: {
+      // args
+      data: NexusGenInputs['EntityTypeCreateInput'] // EntityTypeCreateInput!
+    }
     createStore: {
       // args
       data: NexusGenInputs['StoreCreateInput'] // StoreCreateInput!
@@ -431,6 +593,22 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    entities: {
+      // args
+      cursor?: NexusGenInputs['EntityWhereUniqueInput'] | null // EntityWhereUniqueInput
+      orderBy?: NexusGenInputs['EntityOrderByInput'][] | null // [EntityOrderByInput!]
+      skip?: number | null // Int
+      take?: number | null // Int
+      where?: NexusGenInputs['EntityWhereInput'] | null // EntityWhereInput
+    }
+    entityTypes: {
+      // args
+      cursor?: NexusGenInputs['EntityTypeWhereUniqueInput'] | null // EntityTypeWhereUniqueInput
+      orderBy?: NexusGenInputs['EntityTypeOrderByInput'][] | null // [EntityTypeOrderByInput!]
+      skip?: number | null // Int
+      take?: number | null // Int
+      where?: NexusGenInputs['EntityTypeWhereInput'] | null // EntityTypeWhereInput
+    }
     stores: {
       // args
       cursor?: NexusGenInputs['StoreWhereUniqueInput'] | null // StoreWhereUniqueInput

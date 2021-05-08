@@ -21,6 +21,8 @@ const ruleTree: RuleTree<NexusGenFieldTypes> = {
   },
   Mutation: {
     createStore: isAuthenticated,
+    createEntity: isAuthenticated,
+    createEntityType: isAuthenticated,
   },
 }
 

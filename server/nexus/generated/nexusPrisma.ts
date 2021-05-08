@@ -16,13 +16,15 @@ interface PrismaModels {
   User: Prisma.User
   Token: Prisma.Token
   Store: Prisma.Store
+  Entity: Prisma.Entity
+  EntityType: Prisma.EntityType
 }
 
 // Prisma input types metadata
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname' | 'Tokens' | 'Stores'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname' | 'Tokens' | 'Stores' | 'Entities' | 'EntityTypes'
       ordering: 'id' | 'username' | 'email' | 'fullname' | 'password' | 'active' | 'sudo' | 'createdAt' | 'updatedAt' | 'showEmail' | 'showFullname'
     }
     tokens: {
@@ -31,6 +33,14 @@ interface NexusPrismaInputs {
     }
     stores: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
+    }
+    entities: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy' | 'entityTypeId' | 'EntityType'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'entityTypeId'
+    }
+    entityTypes: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy' | 'Entities'
       ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
     }
   },
@@ -43,12 +53,29 @@ interface NexusPrismaInputs {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy'
       ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
     }
+    Entities: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy' | 'entityTypeId' | 'EntityType'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'entityTypeId'
+    }
+    EntityTypes: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy' | 'Entities'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById'
+    }
   }
   Token: {
 
   }
   Store: {
 
+  }
+  Entity: {
+
+  }
+  EntityType: {
+    Entities: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'CreatedBy' | 'entityTypeId' | 'EntityType'
+      ordering: 'id' | 'createdAt' | 'updatedAt' | 'name' | 'createdById' | 'entityTypeId'
+    }
   }
 }
 
@@ -61,6 +88,10 @@ interface NexusPrismaOutputs {
     tokens: 'Token'
     store: 'Store'
     stores: 'Store'
+    entity: 'Entity'
+    entities: 'Entity'
+    entityType: 'EntityType'
+    entityTypes: 'EntityType'
   },
   Mutation: {
     createOneUser: 'User'
@@ -81,6 +112,18 @@ interface NexusPrismaOutputs {
     deleteOneStore: 'Store'
     deleteManyStore: 'AffectedRowsOutput'
     upsertOneStore: 'Store'
+    createOneEntity: 'Entity'
+    updateOneEntity: 'Entity'
+    updateManyEntity: 'AffectedRowsOutput'
+    deleteOneEntity: 'Entity'
+    deleteManyEntity: 'AffectedRowsOutput'
+    upsertOneEntity: 'Entity'
+    createOneEntityType: 'EntityType'
+    updateOneEntityType: 'EntityType'
+    updateManyEntityType: 'AffectedRowsOutput'
+    deleteOneEntityType: 'EntityType'
+    deleteManyEntityType: 'AffectedRowsOutput'
+    upsertOneEntityType: 'EntityType'
   },
   User: {
     id: 'String'
@@ -96,6 +139,8 @@ interface NexusPrismaOutputs {
     showFullname: 'Boolean'
     Tokens: 'Token'
     Stores: 'Store'
+    Entities: 'Entity'
+    EntityTypes: 'EntityType'
   }
   Token: {
     id: 'String'
@@ -112,6 +157,25 @@ interface NexusPrismaOutputs {
     createdById: 'String'
     CreatedBy: 'User'
   }
+  Entity: {
+    id: 'String'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
+    name: 'String'
+    createdById: 'String'
+    CreatedBy: 'User'
+    entityTypeId: 'String'
+    EntityType: 'EntityType'
+  }
+  EntityType: {
+    id: 'String'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
+    name: 'String'
+    createdById: 'String'
+    CreatedBy: 'User'
+    Entities: 'Entity'
+  }
 }
 
 // Helper to gather all methods relative to a model
@@ -119,6 +183,8 @@ interface NexusPrismaMethods {
   User: Typegen.NexusPrismaFields<'User'>
   Token: Typegen.NexusPrismaFields<'Token'>
   Store: Typegen.NexusPrismaFields<'Store'>
+  Entity: Typegen.NexusPrismaFields<'Entity'>
+  EntityType: Typegen.NexusPrismaFields<'EntityType'>
   Query: Typegen.NexusPrismaFields<'Query'>
   Mutation: Typegen.NexusPrismaFields<'Mutation'>
 }

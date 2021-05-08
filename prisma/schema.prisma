@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid()) @db.Char(25)
-  username     String   @unique
-  email        String   @unique
+  id           String       @id @default(cuid()) @db.Char(25)
+  username     String       @unique
+  email        String       @unique
   fullname     String?
   password     String
-  active       Boolean  @default(true)
-  sudo         Boolean  @default(false)
-  createdAt    DateTime @default(now("0")) @db.DateTime("0")
-  updatedAt    DateTime @default(now("0")) @updatedAt @db.DateTime("0")
-  showEmail    Boolean  @default(false)
-  showFullname Boolean  @default(true)
+  active       Boolean      @default(true)
+  sudo         Boolean      @default(false)
+  createdAt    DateTime     @default(now("0")) @db.DateTime("0")
+  updatedAt    DateTime     @default(now("0")) @updatedAt @db.DateTime("0")
+  showEmail    Boolean      @default(false)
+  showFullname Boolean      @default(true)
   Tokens       Token[]
-  Stores        Store[]
+  Stores       Store[]
+  Entities     Entity[]
+  EntityTypes  EntityType[]
 }
 
 model Token {
@@ -41,4 +43,29 @@ model Store {
 
   createdById String @db.Char(25)
   CreatedBy   User   @relation(fields: [createdById], references: [id])
+}
+
+model Entity {
+  id        String   @id @default(cuid()) @db.Char(25)
+  createdAt DateTime @default(now("0")) @db.DateTime("0")
+  updatedAt DateTime @default(now("0")) @updatedAt @db.DateTime("0")
+  name      String
+
+  createdById String @db.Char(25)
+  CreatedBy   User   @relation(fields: [createdById], references: [id])
+
+  entityTypeId String?     @db.Char(25)
+  EntityType   EntityType? @relation(fields: [entityTypeId], references: [id])
+}
+
+model EntityType {
+  id        String   @id @default(cuid()) @db.Char(25)
+  createdAt DateTime @default(now("0")) @db.DateTime("0")
+  updatedAt DateTime @default(now("0")) @updatedAt @db.DateTime("0")
+  name      String
+
+  createdById String @db.Char(25)
+  CreatedBy   User   @relation(fields: [createdById], references: [id])
+
+  Entities Entity[]
 }

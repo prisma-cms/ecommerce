@@ -1,26 +1,26 @@
 import { objectType, extendType, inputObjectType, nonNull } from 'nexus'
-import { createStore } from './resolvers'
+import { createEntity } from './resolvers'
 
-export const StoreQuery = extendType({
+export const EntityQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.crud.stores({
-      description: 'Список хранилищь',
+    t.crud.entities({
+      description: 'Список сущностей',
       filtering: true,
       ordering: true,
     })
   },
 })
 
-export const StoreCreateInput = inputObjectType({
-  name: 'StoreCreateInput',
+export const EntityCreateInput = inputObjectType({
+  name: 'EntityCreateInput',
   definition(t) {
     t.nonNull.string('name')
   },
 })
 
-export const StorePayload = objectType({
-  name: 'StorePayload',
+export const EntityPayload = objectType({
+  name: 'EntityPayload',
   description: 'Объект ответа мутации',
   definition(t) {
     t.nonNull.boolean('success')
@@ -29,31 +29,31 @@ export const StorePayload = objectType({
       type: 'RequestError',
     })
     t.field('data', {
-      type: 'Store',
+      type: 'Entity',
     })
   },
 })
 
-export const StoreMutation = extendType({
+export const EntityMutation = extendType({
   type: 'Mutation',
   definition: (t) => {
-    t.nonNull.field('createStore', {
-      description: 'Создать хранилище',
-      type: 'StorePayload',
+    t.nonNull.field('createEntity', {
+      description: 'Создать сущность',
+      type: 'EntityPayload',
       args: {
-        data: nonNull('StoreCreateInput'),
+        data: nonNull('EntityCreateInput'),
       },
-      resolve: createStore,
+      resolve: createEntity,
     })
   },
 })
 
-export const Store = objectType({
-  name: 'Store',
-  description: 'Хранилище',
+export const Entity = objectType({
+  name: 'Entity',
+  description: 'Сущность',
   sourceType: {
     module: '@prisma/client',
-    export: 'Store',
+    export: 'Entity',
   },
   definition(t) {
     t.nonNull.string('id')

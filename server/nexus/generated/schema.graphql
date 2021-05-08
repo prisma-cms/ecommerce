@@ -44,9 +44,145 @@ input DateTimeNullableFilter {
   notIn: [DateTime!]
 }
 
+"""
+Сущность
+"""
+type Entity {
+  """
+  Когда создан
+  """
+  createdAt: DateTime!
+  id: String!
+  name: String
+
+  """
+  Когда обновлен
+  """
+  updatedAt: DateTime!
+}
+
+input EntityCreateInput {
+  name: String!
+}
+
+input EntityListRelationFilter {
+  every: EntityWhereInput
+  none: EntityWhereInput
+  some: EntityWhereInput
+}
+
+input EntityOrderByInput {
+  createdAt: SortOrder
+  createdById: SortOrder
+  entityTypeId: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+"""
+Объект ответа мутации
+"""
+type EntityPayload {
+  data: Entity
+  errors: [RequestError!]!
+  message: String
+  success: Boolean!
+}
+
+"""
+Тип сущности
+"""
+type EntityType {
+  """
+  Когда создан
+  """
+  createdAt: DateTime!
+  id: String!
+  name: String
+
+  """
+  Когда обновлен
+  """
+  updatedAt: DateTime!
+}
+
+input EntityTypeCreateInput {
+  name: String!
+}
+
+input EntityTypeListRelationFilter {
+  every: EntityTypeWhereInput
+  none: EntityTypeWhereInput
+  some: EntityTypeWhereInput
+}
+
+input EntityTypeOrderByInput {
+  createdAt: SortOrder
+  createdById: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+"""
+Объект ответа мутации
+"""
+type EntityTypePayload {
+  data: EntityType
+  errors: [RequestError!]!
+  message: String
+  success: Boolean!
+}
+
+input EntityTypeWhereInput {
+  AND: [EntityTypeWhereInput!]
+  CreatedBy: UserWhereInput
+  Entities: EntityListRelationFilter
+  NOT: [EntityTypeWhereInput!]
+  OR: [EntityTypeWhereInput!]
+  createdAt: DateTimeFilter
+  createdById: StringFilter
+  id: StringFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input EntityTypeWhereUniqueInput {
+  id: String
+}
+
+input EntityWhereInput {
+  AND: [EntityWhereInput!]
+  CreatedBy: UserWhereInput
+  EntityType: EntityTypeWhereInput
+  NOT: [EntityWhereInput!]
+  OR: [EntityWhereInput!]
+  createdAt: DateTimeFilter
+  createdById: StringFilter
+  entityTypeId: StringNullableFilter
+  id: StringFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input EntityWhereUniqueInput {
+  id: String
+}
+
 scalar JSON
 
 type Mutation {
+  """
+  Создать сущность
+  """
+  createEntity(data: EntityCreateInput!): EntityPayload!
+
+  """
+  Создать тип сущности
+  """
+  createEntityType(data: EntityTypeCreateInput!): EntityTypePayload!
+
   """
   Создать хранилище
   """
@@ -119,6 +255,27 @@ input NestedStringNullableFilter {
 }
 
 type Query {
+  """
+  Список сущностей
+  """
+  entities(
+    cursor: EntityWhereUniqueInput
+    orderBy: [EntityOrderByInput!]
+    skip: Int
+    take: Int
+    where: EntityWhereInput
+  ): [Entity!]!
+
+  """
+  Список типов сущностей
+  """
+  entityTypes(
+    cursor: EntityTypeWhereUniqueInput
+    orderBy: [EntityTypeOrderByInput!]
+    skip: Int
+    take: Int
+    where: EntityTypeWhereInput
+  ): [EntityType!]!
   me: User
 
   """
@@ -193,7 +350,7 @@ input StoreOrderByInput {
 }
 
 """
-Объект ответа мутации пользователя
+Объект ответа мутации
 """
 type StorePayload {
   data: Store
@@ -330,6 +487,8 @@ input UserSignupDataInput {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  Entities: EntityListRelationFilter
+  EntityTypes: EntityTypeListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   Stores: StoreListRelationFilter

@@ -1,26 +1,26 @@
 import { objectType, extendType, inputObjectType, nonNull } from 'nexus'
-import { createStore } from './resolvers'
+import { createEntityType } from './resolvers'
 
-export const StoreQuery = extendType({
+export const EntityTypeQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.crud.stores({
-      description: 'Список хранилищь',
+    t.crud.entityTypes({
+      description: 'Список типов сущностей',
       filtering: true,
       ordering: true,
     })
   },
 })
 
-export const StoreCreateInput = inputObjectType({
-  name: 'StoreCreateInput',
+export const EntityTypeCreateInput = inputObjectType({
+  name: 'EntityTypeCreateInput',
   definition(t) {
     t.nonNull.string('name')
   },
 })
 
-export const StorePayload = objectType({
-  name: 'StorePayload',
+export const EntityTypePayload = objectType({
+  name: 'EntityTypePayload',
   description: 'Объект ответа мутации',
   definition(t) {
     t.nonNull.boolean('success')
@@ -29,31 +29,31 @@ export const StorePayload = objectType({
       type: 'RequestError',
     })
     t.field('data', {
-      type: 'Store',
+      type: 'EntityType',
     })
   },
 })
 
-export const StoreMutation = extendType({
+export const EntityTypeMutation = extendType({
   type: 'Mutation',
   definition: (t) => {
-    t.nonNull.field('createStore', {
-      description: 'Создать хранилище',
-      type: 'StorePayload',
+    t.nonNull.field('createEntityType', {
+      description: 'Создать тип сущности',
+      type: 'EntityTypePayload',
       args: {
-        data: nonNull('StoreCreateInput'),
+        data: nonNull('EntityTypeCreateInput'),
       },
-      resolve: createStore,
+      resolve: createEntityType,
     })
   },
 })
 
-export const Store = objectType({
-  name: 'Store',
-  description: 'Хранилище',
+export const EntityType = objectType({
+  name: 'EntityType',
+  description: 'Тип сущности',
   sourceType: {
     module: '@prisma/client',
-    export: 'Store',
+    export: 'EntityType',
   },
   definition(t) {
     t.nonNull.string('id')
